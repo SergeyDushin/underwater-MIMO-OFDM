@@ -1,5 +1,15 @@
 % =====================================================================    
-% MIMO-OFDM implemetation for hydroacoustic link 
+% Hydroacoustic MIMO-OFDM implemetation
+%
+% Classes:
+% transmitter - 
+% 
+%
+%
+% Ojects:
+%
+%
+% 
 % ===================================================================== 
 
 % paths
@@ -13,29 +23,49 @@ addpath('./External-libs/Nissel-FBMC-OFDM/Theory');
 % ======================================================================
 % Simulation parameters   
 %=======================================================================
-% transmited data
-% rx_tx common parameters
+% comon and data parameters
+data_length=2048;
+
+
 % transmitter parameters
+
 % receiver prarameters
+
 % validate parameters 
-tx_params =1
+
 
 % ======================================================================
-% Create objects   
-%======================================================================+
-% transmitter
-% receiver
+% Create data and objects   
+%=======================================================================
+% data
+data=data_generator(data_length); 
 
+% transmitter
+TX=transmitter(tx_parameters);
+
+% channel
+Ch=channel(rx_parameters);
+
+% receiver
+RX=receiver(rx_parameters);
 
 
 % ======================================================================
 % Run simulation   
 %=======================================================================
 
-%transmit signal
-%apply channel 
+%create transmit signal
+
+
+%apply channel
+
+
 %receive signal
+
+
 %estimate the perfomznce
+
+
 
 
 
