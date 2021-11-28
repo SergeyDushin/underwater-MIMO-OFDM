@@ -8,28 +8,42 @@
 %
 % Ojects:
 % TX, Ch, RX - object for link parts 
-% ===================================================================== 
-
+% =====================================================================    
+% Sergey Dushin, nihsuds@gmail.com
+% (c) 2021 by V.A. Trapeznikov Institute of control sciences of RAS
+% www.ipu.ru
+% =====================================================================
+  
 % paths
 clear; close all;
-addpath('./External-libs/Watermark-dataset/BCH1/mat');
-addpath('./External-libs/Watermark-dataset/matlab');
-addpath('./External-libs/Nissel-FBMC-OFDM');
-addpath('./External-libs/Nissel-FBMC-OFDM/Theory');
+% addpath('./External-libs/Watermark-dataset/BCH1/mat');
+% addpath('./External-libs/Watermark-dataset/matlab');
+% addpath('./External-libs/Nissel-FBMC-OFDM');
+% addpath('./External-libs/Nissel-FBMC-OFDM/Theory');
 
 
 % ======================================================================
 % Simulation parameters   
 %=======================================================================
-% comon and data parameters
+% common and data parameters
 data_length=2048;
+f_central =35000;
+QAM_Order=4;
+OFDM_subcarriers=256;
+
+% transmitter unique parameters
+%TBD
 
 
-% transmitter parameters
+% receiver unique prarameters
+% TBD
 
-% receiver prarameters
+% channel unique parameters
+% TBD
+
 
 % validate parameters 
+% TBD
 
 
 % ======================================================================
@@ -39,13 +53,13 @@ data_length=2048;
 data=data_generator(data_length); 
 
 % transmitter
-TX=transmitter(tx_parameters);
+%TX=transmitter(tx_parameters);
 
 % channel
-Ch=channel(rx_parameters);
+%Ch=channel(rx_parameters);
 
 % receiver
-RX=receiver(rx_parameters);
+%RX=receiver(rx_parameters);
 
 
 % ======================================================================
