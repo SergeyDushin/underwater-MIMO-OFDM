@@ -1,18 +1,16 @@
-classdef transmitter
-    % This class implements hydroacoustic MIMO-OFDM transmitter  
+classdef perfomance_analizer
+    %PERFOMANCE_ANALIZER Summary of this class goes here
     %   Detailed explanation goes here
     
-    properties (SetAccess = private)
-        Framer
-        Modulator
-        Antenna
+    properties
+        Property1
     end
     
     methods
-        function obj = transmitter(varargin)
-            %TRANSMITTER Construct an instance of this class
+        function obj = perfomance_analizer(inputArg1,inputArg2)
+            %PERFOMANCE_ANALIZER Construct an instance of this class
             %   Detailed explanation goes here
-            obj.Property1 = verargin(1);
+            obj.Property1 = inputArg1 + inputArg2;
         end
         
         function outputArg = method1(obj,inputArg)

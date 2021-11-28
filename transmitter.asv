@@ -2,12 +2,13 @@ classdef transmitter
     % This class implements hydroacoustic MIMO-OFDM transmitter  
     %   Detailed explanation goes here
     
-    properties
-        Property1
+    properties (SetAccess = private)
+        Framer
+        Modulator
     end
     
     methods
-        function obj = transmitter(inputArg1,inputArg2)
+        function obj = transmitter(varargin)
             %TRANSMITTER Construct an instance of this class
             %   Detailed explanation goes here
             obj.Property1 = inputArg1 + inputArg2;

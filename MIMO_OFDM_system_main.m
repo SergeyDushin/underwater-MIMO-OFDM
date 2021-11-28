@@ -25,41 +25,86 @@ clear; close all;
 % ======================================================================
 % Simulation parameters   
 %=======================================================================
-% common and data parameters
-data_length=2048;
-f_central =35000;
-QAM_Order=4;
-OFDM_subcarriers=256;
+% Simulation time and input data
+SimulationTime=10;
+DataSampleRate=100000;
+DataLength=SimulationTime*DataSampleRate;
 
-% transmitter unique parameters
-%TBD
+% transmitter parameters
+TxFrameLength=128;
+TxCentralFrequency =35000;
+TxQAMOrder=4;
+TxNumberOfSubcarriers=256;
+TxSubcarrierSpacing=20;
+TxNumberOfAntenna=4;
+TxInputDataSampleRate=DataSampleRate;
+TxPreambulaLength=16;
+TxCyclicPrefixLength=0.0001;
+TxZeroGuardTimeLength=0;
 
 
-% receiver unique prarameters
+% receiver  prarameters
+RxFrameLength=128;
+RxCentralFrequency =35000;
+RxQAMOrder=4;
+RxNumberOfSubcarriers=256;
+RxNumberOfAntenna=4;
+RxEqualizationMethod='OneTap'
+RxInputDataSampleRate=DataSampleRate;
+RxPreambulaLength=16;
+RxCyclicPrefixLength=0.0001;
+RxZeroGuardTimeLength=0;
+
+
+
+% channel parameters
 % TBD
-
-% channel unique parameters
-% TBD
-
 
 % validate parameters 
 % TBD
 
+% Here is different modulation modes
+% TX-->analizer
+% TX-->Channel-->analizer
+% TX-->RX-->analizer
+% TX-->Channel --> analizer
 
 % ======================================================================
 % Create data and objects   
 %=======================================================================
 % data
-data=data_generator(data_length); 
+data=data_generator(DataLength); 
 
 % transmitter
-%TX=transmitter(tx_parameters);
+TX=transmitter (...
+    TxFrameLength,...
+    TxCentralFrequency,...
+    TxQAMOrder,...
+    TxNumberOfSubcarriers,...
+    TxSubcarrierSpacing,...
+    TxNumberOfAntenna,...
+    TxInputDataSampleRate,...
+    TxPreambulaLength,...
+    TxCyclicPrefixLength,...
+    TxZeroGuardTimeLength...
+); 
 
 % channel
 %Ch=channel(rx_parameters);
 
 % receiver
-%RX=receiver(rx_parameters);
+RX=receiver(...
+    RxFrameLength,...
+    RxCentralFrequency,...
+    RxQAMOrder,...
+    RxNumberOfSubcarriers,...
+    RxNumberOfAntenna,...
+    RxEqualizationMethod,...
+    RxInputDataSampleRate,...
+    RxPreambulaLength,...
+    RxCyclicPrefixLength,...
+    RxZeroGuardTimeLength...
+    );
 
 
 % ======================================================================
