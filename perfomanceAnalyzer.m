@@ -1,5 +1,5 @@
-classdef perfomance_analizer
-    %PERFOMANCE_ANALIZER Summary of this class goes here
+classdef perfomanceAnalyzer
+    %PERFOMANCEANALYZER Summary of this class goes here
     %   Detailed explanation goes here
     
     properties
@@ -7,8 +7,8 @@ classdef perfomance_analizer
     end
     
     methods
-        function obj = perfomance_analizer(inputArg1,inputArg2)
-            %PERFOMANCE_ANALIZER Construct an instance of this class
+        function obj = perfomanceAnalyzer(inputArg1,inputArg2)
+            %PERFOMANCEANALYZER Construct an instance of this class
             %   Detailed explanation goes here
             obj.Property1 = inputArg1 + inputArg2;
         end

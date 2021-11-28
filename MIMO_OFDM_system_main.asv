@@ -2,33 +2,36 @@
 % Hydroacoustic MIMO-OFDM implemetation
 %
 % Classes:
+% dataGenerator - generator of data to be transmitted
 % transmitter - class for transmitter side 
 % receiver - class for receiver side
 % channel - class for channel
+% perfomanceAnalyzer - class for received data anlysis 
 %
 % Ojects:
-% TX, Ch, RX - object for link parts 
+% DG,TX, Ch, RX - object for link parts
+% RA - object for perfomance analysis and vizualization
 % =====================================================================    
 % Sergey Dushin, nihsuds@gmail.com
 % (c) 2021 by V.A. Trapeznikov Institute of control sciences of RAS
 % www.ipu.ru
+%
+% =====================================================================
+% MIT license
 % =====================================================================
   
-% paths
+% clear
 clear; close all;
-% addpath('./External-libs/Watermark-dataset/BCH1/mat');
-% addpath('./External-libs/Watermark-dataset/matlab');
-% addpath('./External-libs/Nissel-FBMC-OFDM');
-% addpath('./External-libs/Nissel-FBMC-OFDM/Theory');
 
-
+%%
 % ======================================================================
-% Simulation parameters   
+% Simulation parameters and its validation  
 %=======================================================================
-% Simulation time and input data
-SimulationTime=10;
-DataSampleRate=100000;
-DataLength=SimulationTime*DataSampleRate;
+% Data generator and timings
+DgSimulationTime=10;
+DgDataSampleRate=100000;
+DgWaveForm='wgn';
+
 
 % transmitter parameters
 TxFrameLength=128;
@@ -49,31 +52,58 @@ RxCentralFrequency =35000;
 RxQAMOrder=4;
 RxNumberOfSubcarriers=256;
 RxNumberOfAntenna=4;
-RxEqualizationMethod='OneTap'
+RxEqualizationMethod='OneTap';
 RxInputDataSampleRate=DataSampleRate;
 RxPreambulaLength=16;
 RxCyclicPrefixLength=0.0001;
 RxZeroGuardTimeLength=0;
 
 
-
 % channel parameters
-% TBD
+ChNumberOfInput=4;
+ChNumberOfOutput=4;
+ChType='Watermark_BCH1';
 
+
+
+% Here is different link configurations:
+% Channel,TX,RX can be excluded from link for dedug 
+% Data generator and analyzer allways presented
+% Relevant configuration:
+% DataGenerator-->analyzer
+% DataGenerator-->TX-->analyzer
+% DataGenerator-->TX-->Channel-->analyzer
+% DataGenerator-->TX-->RX-->analyzer
+% DataGenerator-->TX-->Channel-->RX-->analyzer
+IncludeTX = 'Yes';
+IncludeChannel = 'Yes';
+IncludeRX = 1;
+
+
+% Analysis and vizaulization parameters (depends on simulation modes)
+if strcmp(IncludeRx, 'Yes')
+    PaMode='ReceiverOut';
+elseif IncludeTX == 'Yes'
+    PaMode='TransmitterOut';
+else
+    PaMode='DataGeneratorOut';   
+end
+    
 % validate parameters 
+% check that the parameters for TX,CH, RX is compatible
 % TBD
 
-% Here is diferent modulation modes
-% TX only
-% TX+Channel
-% TX+RX
-%TX
 
+%%
 % ======================================================================
-% Create data and objects   
+% Create objects for simulation   
 %=======================================================================
 % data
-data=data_generator(DataLength); 
+DG=dataGenerator(...
+    DgSimulationTime,...
+    DgDataSampleRate,...
+    DgWaveForm...
+    ); 
 
 % transmitter
 TX=transmitter (...
@@ -87,10 +117,14 @@ TX=transmitter (...
     TxPreambulaLength,...
     TxCyclicPrefixLength,...
     TxZeroGuardTimeLength...
-); 
+    ); 
 
 % channel
-%Ch=channel(rx_parameters);
+Ch=channel(...
+    ChNumberOfInput,...
+    ChNumberOfOutput,...
+    ChType...
+    );
 
 % receiver
 RX=receiver(...
@@ -106,21 +140,26 @@ RX=receiver(...
     RxZeroGuardTimeLength...
     );
 
+RA=perfomanceAnalyzer(...
+    PaMode...
+    );
 
+
+%%
 % ======================================================================
 % Run simulation   
 %=======================================================================
 
-%create transmit signal
+%create signal to be transmitted
 
+%create TX line signal
 
 %apply channel
 
+%receive the signal
 
-%receive signal
-
-
-%estimate the perfomznce
+%%
+% Estimate the perfomance
 
 
 
