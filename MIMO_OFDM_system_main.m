@@ -77,10 +77,12 @@ ChType='Watermark_BCH1';
 % DataGenerator-->TX-->Channel-->RX-->analyzer
 IncludeTX = 'Yes';
 IncludeChannel = 'Yes';
+%IncludeChannel = 'No';
 IncludeRX = 'Yes';
 
 
 % Analysis and vizaulization parameters (depends on simulation modes)
+% Channel Out = TX Out in terms of analyzer
 if strcmp(IncludeRX, 'Yes')
     PaMode='ReceiverOut';
 elseif strcmp(IncludeTX, 'Yes')
@@ -90,7 +92,7 @@ else
 end
     
 % validate parameters 
-% check that the parameters for TX,CH, RX is compatible
+% check that the parameters for DG, TX, CH, RX, Analyzer are compatible
 % TBD
 
 
@@ -152,25 +154,37 @@ RA=perfomanceAnalyzer(...
 % Run simulation   
 %=======================================================================
 
-% analyze link configuration
-% TBD parsing of the configuration using this variables
-% IncludeTX = 'Yes';
-% IncludeChannel = 'Yes';
-% IncludeRX = 'Yes';
+% validate defined simulation mode to exclude wrong link configurations 
+if strcmp(IncludeTX, 'No')
+    if strcmp(IncludeRX, 'Yes')
+        error('Invalid simulation mode: RX must be off, when TX is off')
+    elseif strcmp(IncludeChannel, 'Yes')
+        error('Invalid simulation mode: Channel must be off, when TX is off')
+    end 
+end
 
+% Start the simulation
 
-%create signal to be transmitted
+%create signal to be transmitted. It is created always
+%Data=DG.MethodForDataGeneration;
 
-%create TX line signal
+%create TX passband signal if defined
+if strcmp(IncludeTX, 'Yes')
+    %TX.TransmittData; maybe several methods for transmitted signal creation
+end
 
-%apply channel
+%apply channel if defined
+if strcmp(IncludeChannel, 'Yes')
+    %CH.ApplyChannel; maybe several methods to apply channel
+end
 
-%receive the signal
+%receive the signal if defined
+if strcmp(IncludeRX, 'Yes')
+    %RX.ReceiveTheSignal; maybe several methods for receive the signal
+end
 
-
-
-%%
-% Estimate the perfomance
+% Estimate the perfomance. It is performed always (and depend on PaMode)
+%RA.AnalyzeData
 
 
 

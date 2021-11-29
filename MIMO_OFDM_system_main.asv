@@ -77,26 +77,30 @@ ChType='Watermark_BCH1';
 % DataGenerator-->TX-->Channel-->RX-->analyzer
 IncludeTX = 'Yes';
 IncludeChannel = 'Yes';
-IncludeRX = 1;
+%IncludeChannel = 'No';
+IncludeRX = 'Yes';
 
 
 % Analysis and vizaulization parameters (depends on simulation modes)
-if strcmp(IncludeRx, 'Yes')
+% Channel Out = TX Out in terms of analyzer
+if strcmp(IncludeRX, 'Yes')
     PaMode='ReceiverOut';
-elseif IncludeTX == 'Yes'
+elseif strcmp(IncludeTX, 'Yes')
     PaMode='TransmitterOut';
 else
     PaMode='DataGeneratorOut';   
 end
     
 % validate parameters 
-% check that the parameters for TX,CH, RX is compatible
+% check that the parameters for DG, TX, CH, RX, Analyzer are compatible
 % TBD
 
 
 %%
 % ======================================================================
-% Create objects for simulation   
+% Create objects for simulation
+% The program crate all objects in the link even part of this will be
+% skiped during simulation
 %=======================================================================
 % data
 DG=dataGenerator(...
@@ -150,16 +154,42 @@ RA=perfomanceAnalyzer(...
 % Run simulation   
 %=======================================================================
 
-%create signal to be transmitted
+% validate defined simulation mode  
+if strcmp(IncludeTX, 'No')
+    if strcmp(IncludeRX, 'Yes')
+        error('Invalid simulation configuration: RX must be off, when TX is off')
+    elseif strcmp(IncludeChannel, 'Yes')
+    end 
+end
 
-%create TX line signal
+% IncludeTX = 'Yes';
+% IncludeChannel = 'Yes';
+% IncludeRX = 'Yes';
+% DataGenerator-->TX-->Channel-->RX-->analyzer
 
-%apply channel
 
-%receive the signal
+% Start the simulation
 
-%%
-% Estimate the perfomance
+%create signal to be transmitted. It is created always
+%Data=DG.MethodForDataGeneration;
+
+%create TX passband signal if defined
+if strcmp(IncludeTX, 'Yes')
+    %TX.TransmittData; maybe several methods for transmitted signal creation
+end
+
+%apply channel if defined
+if strcmp(IncludeChannel, 'Yes')
+    %CH.ApplyChannel; maybe several methods to apply channel
+end
+
+%receive the signal if defined
+if strcmp(IncludeRX, 'Yes')
+    %RX.ReceiveTheSignal; maybe several methods for receive the signal
+end
+
+% Estimate the perfomance. It is performed always (and depend on PaMode)
+%RA.AnalyzeData
 
 
 
