@@ -2,6 +2,8 @@ classdef dataGenerator
     % DATA GENERATOR 
     %   Class for generation of data to be transmitted
     
+    % version 0.1
+    
     properties (SetAccess = private)
         GeneratorSettings
     end
@@ -9,8 +11,8 @@ classdef dataGenerator
     methods
         function obj = dataGenerator(varargin)
             % DATA GENERATOR constructor
-            obj.GeneratorSettings.GenerationTime = varargin{1};
-            obj.GeneratorSettings.DataSampleRate = varargin{2};
+            obj.GeneratorSettings.GenerationTime = varargin{1}; % in seconds
+            obj.GeneratorSettings.DataSampleRate = varargin{2}; % samples per second
             obj.GeneratorSettings.waveform = varargin{3};
         end
         

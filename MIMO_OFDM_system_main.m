@@ -40,7 +40,7 @@ TxQAMOrder=4;
 TxNumberOfSubcarriers=256;
 TxSubcarrierSpacing=20;
 TxNumberOfAntenna=4;
-TxInputDataSampleRate=DataSampleRate;
+TxInputDataSampleRate=DgDataSampleRate;
 TxPreambulaLength=16;
 TxCyclicPrefixLength=0.0001;
 TxZeroGuardTimeLength=0;
@@ -53,7 +53,7 @@ RxQAMOrder=4;
 RxNumberOfSubcarriers=256;
 RxNumberOfAntenna=4;
 RxEqualizationMethod='OneTap';
-RxInputDataSampleRate=DataSampleRate;
+RxInputDataSampleRate=DgDataSampleRate;
 RxPreambulaLength=16;
 RxCyclicPrefixLength=0.0001;
 RxZeroGuardTimeLength=0;
@@ -75,10 +75,12 @@ ChType='Watermark_BCH1';
 % DataGenerator-->TX-->Channel-->analyzer
 % DataGenerator-->TX-->RX-->analyzer
 % DataGenerator-->TX-->Channel-->RX-->analyzer
-IncludeTX = 'Yes';
-IncludeChannel = 'Yes';
-%IncludeChannel = 'No';
-IncludeRX = 'Yes';
+%IncludeTX = 'Yes';
+IncludeTX = 'No';
+%IncludeChannel = 'Yes';
+IncludeChannel = 'No';
+%IncludeRX = 'Yes';
+IncludeRX = 'No'; % TX, Ch, RX are off - for generator-->analyzer dedug
 
 
 % Analysis and vizaulization parameters (depends on simulation modes)
@@ -166,25 +168,30 @@ end
 % Start the simulation
 
 %create signal to be transmitted. It is created always
-%Data=DG.MethodForDataGeneration;
+Data=DG.generateData();
+SimOut=Data; % default simulation output if other parts are off
 
 %create TX passband signal if defined
 if strcmp(IncludeTX, 'Yes')
     %TX.TransmittData; maybe several methods for transmitted signal creation
+    SimOut=TxOut;
 end
 
 %apply channel if defined
 if strcmp(IncludeChannel, 'Yes')
     %CH.ApplyChannel; maybe several methods to apply channel
+    SimOut=ChOut;
 end
 
 %receive the signal if defined
 if strcmp(IncludeRX, 'Yes')
     %RX.ReceiveTheSignal; maybe several methods for receive the signal
+    SimOut=RxOut;
 end
 
+
 % Estimate the perfomance. It is performed always (and depend on PaMode)
-%RA.AnalyzeData
+RA.AnalyzeData(SimOut);
 
 
 

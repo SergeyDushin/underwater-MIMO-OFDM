@@ -7,10 +7,10 @@ classdef receiver
     end
     
     methods
-        function obj = receiver(inputArg1,inputArg2)
+        function obj = receiver(varargin)
             %RECEIVER Construct an instance of this class
             %   Detailed explanation goes here
-            obj.Property1 = inputArg1 + inputArg2;
+            obj.Property1 =  varargin{1};
         end
         
         function outputArg = method1(obj,inputArg)

@@ -2,6 +2,8 @@ classdef transmitter
     % This class implements hydroacoustic MIMO-OFDM transmitter  
     %   Detailed explanation goes here
     
+    % It is not implemented yet
+    
     properties (SetAccess = private)
         Framer
         Modulator
@@ -12,7 +14,7 @@ classdef transmitter
         function obj = transmitter(varargin)
             %TRANSMITTER Construct an instance of this class
             %   Detailed explanation goes here
-            obj.Property1 = verargin(1);
+            obj.Framer = varargin(1);
         end
         
         function outputArg = method1(obj,inputArg)
