@@ -1,8 +1,17 @@
 classdef dataGenerator
     % DATA GENERATOR 
-    %   Class for generation of data to be transmitted
-    
-    % version 0.1
+    % Settings description are here
+    % Output is here
+    % =====================================================================    
+    % Sergey Dushin, nihsuds@gmail.com
+    % (c) 2021 by V.A. Trapeznikov Institute of control sciences of RAS
+    % www.ipu.ru
+    %
+    % =====================================================================
+    % MIT license
+    % =====================================================================
+    %version 0.1
+    %======================================================================
     
     properties (SetAccess = private)
         GeneratorSettings

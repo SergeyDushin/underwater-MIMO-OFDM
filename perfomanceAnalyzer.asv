@@ -1,0 +1,32 @@
+classdef perfomanceAnalyzer
+    %PERFOMANCEANALYZER Summary of this class goes here
+    %   Detailed explanation goes here
+    
+    % It is not implemented yet
+    
+    properties
+       AnalyzerSettings
+    end
+    
+    methods
+        function obj = perfomanceAnalyzer(varargin)
+            %PERFOMANCEANALYZER Construct an instance of this class
+            obj.AnalyzerSettings.PaMode = varargin{1};
+
+        end
+        
+        function AnalyzeData(obj,input_data)
+            % analyze the data from link output
+            if strcmp(obj.AnalyzerSettings.PaMode, 'DataGeneratorOut')
+            elseif strcmp(obj.AnalyzerSettings.PaMode, 'DataGeneratorOut')
+            elseif strcmp(obj.AnalyzerSettings.PaMode, 'DataGeneratorOut')
+            else 
+                error (unknown)
+            
+            
+            
+           plot(input_data);
+        end
+    end
+end
+
