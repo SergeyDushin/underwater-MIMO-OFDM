@@ -103,7 +103,7 @@ end
 %%
 % ======================================================================
 % Create objects for simulation
-% The program crate all objects in the link even part of they will be
+% The program crate all objects in the link even some of they will be
 % skiped during simulation
 %=======================================================================
 % data
