@@ -103,7 +103,7 @@ end
 %%
 % ======================================================================
 % Create objects for simulation
-% The program crate all objects in the link even part of this will be
+% The program crate all objects in the link even part of they will be
 % skiped during simulation
 %=======================================================================
 % data
@@ -170,8 +170,8 @@ end
 % Start the simulation
 
 %create signal to be transmitted. It is created always
-Data=DG.generateData();
-SimOut=Data; % default simulation output if other parts are off
+InputData=DG.generateData();
+SimOut=InputData; % default simulation output if other parts are off
 
 %create TX passband signal if defined
 if strcmp(IncludeTX, 'Yes')
@@ -193,7 +193,7 @@ end
 
 
 % Estimate the perfomance. It is performed always (and depend on PaMode)
-RA.AnalyzeData(SimOut);
+RA.AnalyzeData(InputData,SimOut);
 
 
 

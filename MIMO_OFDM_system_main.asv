@@ -19,6 +19,8 @@
 % =====================================================================
 % MIT license
 % =====================================================================
+%version 0.1
+%======================================================================
   
 % clear
 clear; close all;
@@ -101,7 +103,7 @@ end
 %%
 % ======================================================================
 % Create objects for simulation
-% The program crate all objects in the link even part of this will be
+% The program crate all objects in the link even part of they will be
 % skiped during simulation
 %=======================================================================
 % data
@@ -168,28 +170,30 @@ end
 % Start the simulation
 
 %create signal to be transmitted. It is created always
-Data=DG.generateData();
+InputData=DG.generateData();
+SimOut=InputData; % default simulation output if other parts are off
 
 %create TX passband signal if defined
 if strcmp(IncludeTX, 'Yes')
     %TX.TransmittData; maybe several methods for transmitted signal creation
+    SimOut=TxOut;
 end
 
 %apply channel if defined
 if strcmp(IncludeChannel, 'Yes')
     %CH.ApplyChannel; maybe several methods to apply channel
+    SimOut=ChOut;
 end
 
 %receive the signal if defined
 if strcmp(IncludeRX, 'Yes')
     %RX.ReceiveTheSignal; maybe several methods for receive the signal
-    Output=RX_output;
+    SimOut=RxOut;
 end
 
 
 % Estimate the perfomance. It is performed always (and depend on PaMode)
-Output=Data; % need for output choosing for different configurations
-RA.AnalyzeData(Output)
+RA.AnalyzeData(InputData,SimOut);
 
 
 

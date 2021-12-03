@@ -11,7 +11,7 @@ classdef perfomanceAnalyzer
     % =====================================================================
     % MIT license
     % =====================================================================
-    % version 0.1
+    % version 0.1 (basic version, just plotting In and Out Signals)
     %======================================================================
     
     properties
@@ -25,29 +25,54 @@ classdef perfomanceAnalyzer
 
         end
         
-        function AnalyzeData(obj,InputData)
+        function AnalyzeData(obj,LinkInputSignal, LinkOutputSignal)
             % choose the set of analysis instruments and call corresponding function 
             if strcmp(obj.AnalyzerSettings.PaMode, 'DataGeneratorOut')
-                obj.AnalyzeGeneratorOut(InputData);
+                obj.AnalyzeGeneratorOut(LinkInputSignal, LinkOutputSignal);
             elseif strcmp(obj.AnalyzerSettings.PaMode, 'TransmitterOut')
-                obj.AnalyzeTransmitterOut(InputData);
+                obj.AnalyzeTransmitterOut(LinkInputSignal, LinkOutputSignal);
             elseif strcmp(obj.AnalyzerSettings.PaMode, 'ReceiverOut')
-                obj.AnalyzeReceiverOut(InputData);
+                obj.AnalyzeReceiverOut(LinkInputSignal, LinkOutputSignal);
             else 
                 error('unknown analyzer target');
             end
         end
     
-        function AnalyzeGeneratorOut(obj,data)
-            plot(data);
+        function AnalyzeGeneratorOut(obj,LinkInData, LinkOutData)
+            figure(1);
+            plot(LinkOutData);
+            xlabel('sample number');
+            ylabel('Generator Output');
+            
         end
 
-        function AnalyzeTransmitterOut(obj,data)
-            plot(data);
+        function AnalyzeTransmitterOut(obj,LinkInData, LinkOutData)
+            
+            figure(1);
+            plot(LinkInData);
+            xlabel('sample number');
+            ylabel('Generator Output');
+            
+            figure(2);
+            plot(LinkOutData);
+            xlabel('sample number');
+            ylabel('TX output');
         end
 
-        function AnalyzeReceiverOut(obj,data)
-            plot(data);
+        function AnalyzeReceiverOut(obj,LinkInData, LinkOutData)
+            
+            figure(1);
+            plot(LinkinData);
+            xlabel('sample number');
+            ylabel('Generator Output');
+            
+            figure(2);
+            plot(LinkOutData);
+            xlabel('sample number');
+            ylabel('RX output');
+            
+            % here is BER estimaton
+            % here is SIR estimation
         end    
     
     end
