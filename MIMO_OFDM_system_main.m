@@ -1,5 +1,5 @@
 % =====================================================================    
-% Hydroacoustic MIMO-OFDM implemetation
+% Hydroacoustic MIMO-OFDM system model
 %
 % Classes:
 % dataGenerator - generator of data to be transmitted
@@ -31,7 +31,7 @@ clear; close all;
 %=======================================================================
 % Data generator and timings
 DgSimulationTime=10;
-DgDataSampleRate=100000;
+DgDataSampleRate=100;
 DgWaveForm='wgn';
 
 
@@ -163,11 +163,11 @@ RX=receiver(...
 % Start the simulation
 
 %create signal to be transmitted. It is created always
-InputData=DG.generateData();
+[InputData,GenFs]=DG.generateData();
 
 %create TX passband signal if defined
 if strcmp(IncludeTX, 'Yes')
-    TxOut=TX.TransmittData(InputData);
+    TxOut=TX.TransmitData(InputData);
 end
 
 %apply channel if defined
@@ -187,7 +187,7 @@ end
 % Do it more flaxeble in next versions (for receiving of any set of the signal).  
 %=======================================================================
 
-% Analysis and vizaulization parameters (depends on simulation modes)
+% Analyzer Settings
 if strcmp(IncludeRX, 'Yes')
     PaMode='ReceiverOut';
 elseif strcmp(IncludeTX, 'Yes')
@@ -200,6 +200,7 @@ end
 switch PaMode
     case 'DataGeneratorOut'
         SimOut=InputData;
+        SampleRate=GenFs;
     case 'TransmitterOut'
         SimOut=TxOut;
     case 'Channel'
@@ -216,7 +217,7 @@ RA=perfomanceAnalyzer(...
     );
 
 % Estimate the perfomance. It is performed always (and depend on PaMode)
-RA.AnalyzeData(InputData,SimOut);
+RA.AnalyzeData(InputData,SimOut,SampleRate,DgSimulationTime);
 disp('Program done');
 
 

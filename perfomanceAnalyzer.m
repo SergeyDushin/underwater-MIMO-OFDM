@@ -25,51 +25,46 @@ classdef perfomanceAnalyzer
 
         end
         
-        function AnalyzeData(obj,LinkInputSignal, LinkOutputSignal)
+        function AnalyzeData(obj,LinkInputSignal,LinkOutputSignal,fs,SimTime)
             % choose the set of analysis instruments and call corresponding function 
             if strcmp(obj.AnalyzerSettings.PaMode, 'DataGeneratorOut')
-                obj.AnalyzeGeneratorOut(LinkInputSignal, LinkOutputSignal);
+                obj.AnalyzeGeneratorOut(LinkInputSignal, LinkOutputSignal,fs,SimTime);
             elseif strcmp(obj.AnalyzerSettings.PaMode, 'TransmitterOut')
-                obj.AnalyzeTransmitterOut(LinkInputSignal, LinkOutputSignal);
+                obj.AnalyzeTransmitterOut(LinkInputSignal, LinkOutputSignal,fs,SimTime);
             elseif strcmp(obj.AnalyzerSettings.PaMode, 'ReceiverOut')
-                obj.AnalyzeReceiverOut(LinkInputSignal, LinkOutputSignal);
+                obj.AnalyzeReceiverOut(LinkInputSignal, LinkOutputSignal,fs,SimTime);
             else 
                 error('unknown analyzer target');
             end
         end
     
-        function AnalyzeGeneratorOut(obj,LinkInData, LinkOutData)
+        function AnalyzeGeneratorOut(obj,LinkInData, LinkOutData, fs,SimTime)
             figure(1);
-            plot(LinkOutData);
+            n=length(LinkOutData);
+            t=(0:n-1)*(SimTime/n);
+            plot(t,LinkOutData);
             xlabel('sample number');
             ylabel('Generator Output');
+            
+            
+            spec=abs(fft(LinkOutData));
+            f = (0:n-1)*(fs/n);
+            
+            figure(2);
+            plot(f,spec);
+            xlabel('Frequency');
+            ylabel('Power');
             
         end
 
-        function AnalyzeTransmitterOut(obj,LinkInData, LinkOutData)
+        function AnalyzeTransmitterOut(obj,LinkInData, LinkOutData,fs,SimTime)
             
-            figure(1);
-            plot(LinkInData);
-            xlabel('sample number');
-            ylabel('Generator Output');
-            
-            figure(2);
-            plot(LinkOutData);
-            xlabel('sample number');
-            ylabel('TX output');
+            %TBD
         end
 
-        function AnalyzeReceiverOut(obj,LinkInData, LinkOutData)
+        function AnalyzeReceiverOut(obj,LinkInData, LinkOutData,fs,SimTime)
             
-            figure(1);
-            plot(LinkinData);
-            xlabel('sample number');
-            ylabel('Generator Output');
-            
-            figure(2);
-            plot(LinkOutData);
-            xlabel('sample number');
-            ylabel('RX output');
+            %TBD
             
             % here is BER estimaton
             % here is SIR estimation
