@@ -67,16 +67,17 @@ ChNumberOfOutput=4;
 ChType='Watermark_BCH1';
 
 
-
-% Here is different link configurations:
+% Choose link configurations.
 % Channel,TX,RX can be excluded from link for dedug 
-% Data generator and analyzer allways presented
-% Relevant configuration:
+% Data generator and analyzer are always presented
+% Relevant configurations:
 % DataGenerator-->analyzer
 % DataGenerator-->TX-->analyzer
 % DataGenerator-->TX-->Channel-->analyzer
 % DataGenerator-->TX-->RX-->analyzer
 % DataGenerator-->TX-->Channel-->RX-->analyzer
+
+% Choose parts of link witch you can add for simulation:
 %IncludeTX = 'Yes';
 IncludeTX = 'No';
 %IncludeChannel = 'Yes';
@@ -84,17 +85,21 @@ IncludeChannel = 'No';
 %IncludeRX = 'Yes';
 IncludeRX = 'No'; % TX, Ch, RX are off - for generator-->analyzer dedug
 
-
-% Analysis and vizaulization parameters (depends on simulation modes)
-% Channel Out = TX Out in terms of analyzer
-if strcmp(IncludeRX, 'Yes')
-    PaMode='ReceiverOut';
-elseif strcmp(IncludeTX, 'Yes')
-    PaMode='TransmitterOut';
+%Validate and print the selected link configuration: 
+if strcmp(IncludeTX,'No')&&strcmp(IncludeChannel,'No')&&strcmp(IncludeRX,'No')
+    disp('Link configuration: DataGenerator-->analyzer');
+elseif strcmp(IncludeTX,'Yes')&&strcmp(IncludeChannel,'No')&&strcmp(IncludeRX,'No')
+    disp('Link configuration:DataGenerator-->TX-->analyzer');
+elseif strcmp(IncludeTX,'Yes')&&strcmp(IncludeChannel,'Yes')&&strcmp(IncludeRX,'No')
+    disp('Link configuration:DataGenerator-->TX-->Channel-->analyzer');
+elseif strcmp(IncludeTX,'Yes')&&strcmp(IncludeChannel,'No')&&strcmp(IncludeRX,'Yes')
+    disp('Link configuration:DataGenerator-->TX-->RX-->analyzer');
+elseif strcmp(IncludeTX,'Yes')&&strcmp(IncludeChannel,'Yes')&&strcmp(IncludeRX,'Yes')
+    disp('Link configuration:DataGenerator-->TX-->Channel-->RX-->analyzer');
 else
-    PaMode='DataGeneratorOut';   
+    error ('Invalid link configuration. You cannot switch on Ch and/or RX if TX is off')
 end
-    
+
 % validate parameters 
 % check that the parameters for DG, TX, CH, RX, Analyzer are compatible
 % TBD
@@ -103,7 +108,7 @@ end
 %%
 % ======================================================================
 % Create objects for simulation
-% The program crate all objects in the link even part of they will be
+% The program crate all objects in the link even some of they will be
 % skiped during simulation
 %=======================================================================
 % data
@@ -148,52 +153,71 @@ RX=receiver(...
     RxZeroGuardTimeLength...
     );
 
-RA=perfomanceAnalyzer(...
-    PaMode...
-    );
-
-
 %%
 % ======================================================================
 % Run simulation   
 %=======================================================================
 
-% validate defined simulation mode to exclude wrong link configurations 
-if strcmp(IncludeTX, 'No')
-    if strcmp(IncludeRX, 'Yes')
-        error('Invalid simulation mode: RX must be off, when TX is off')
-    elseif strcmp(IncludeChannel, 'Yes')
-        error('Invalid simulation mode: Channel must be off, when TX is off')
-    end 
-end
+% No need any additional validation. It is performed in "parameters" section
 
 % Start the simulation
 
 %create signal to be transmitted. It is created always
 InputData=DG.generateData();
-SimOut=InputData; % default simulation output if other parts are off
 
 %create TX passband signal if defined
 if strcmp(IncludeTX, 'Yes')
-    %TX.TransmittData; maybe several methods for transmitted signal creation
-    SimOut=TxOut;
+    TxOut=TX.TransmittData(InputData);
 end
 
 %apply channel if defined
 if strcmp(IncludeChannel, 'Yes')
-    %CH.ApplyChannel; maybe several methods to apply channel
-    SimOut=ChOut;
+    ChOut=CH.ApplyChannel;
 end
 
 %receive the signal if defined
 if strcmp(IncludeRX, 'Yes')
-    %RX.ReceiveTheSignal; maybe several methods for receive the signal
-    SimOut=RxOut;
+    RxOut=RX.ReceiveTheSignal;
 end
 
+%%
+%=======================================================================
+% Create and run perfomance analyzer
+% The first version of analyzer receive only Output signal. 
+% Do it more flaxeble in next versions (for receiving of any set of the signal).  
+%=======================================================================
+
+% Analysis and vizaulization parameters (depends on simulation modes)
+if strcmp(IncludeRX, 'Yes')
+    PaMode='ReceiverOut';
+elseif strcmp(IncludeTX, 'Yes')
+    PaMode='TransmitterOut';
+else
+    PaMode='DataGeneratorOut';   
+end
+
+% Assign Link Output for analyzer.
+switch PaMode
+    case 'DataGeneratorOut'
+        SimOut=InputData;
+    case 'TransmitterOut'
+        SimOut=TxOut;
+    case 'Channel'
+        SimOut=ChOut;
+    case 'ReceiverOut'
+        SimOut=RxOut;
+    otherwise
+        error('Simulation Output is invalid');
+end
+
+%Create Analyzer object
+RA=perfomanceAnalyzer(...
+    PaMode...
+    );
 
 % Estimate the perfomance. It is performed always (and depend on PaMode)
 RA.AnalyzeData(InputData,SimOut);
+disp('Progra');
 
 
 
