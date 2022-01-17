@@ -12,9 +12,9 @@
 % DG,TX, Ch, RX - object for link parts
 % RA - object for perfomance analysis and vizualization
 % =====================================================================    
-% Sergey Dushin, nihsuds@gmail.com
-% (c) 2021 by V.A. Trapeznikov Institute of control sciences of RAS
-% www.ipu.ru
+% Sergey Dushin, s.dushin@sdlab-co.ru
+% (c) 2021 by SDLab-co
+% www.sdlab-co.ru
 %
 % =====================================================================
 % MIT license

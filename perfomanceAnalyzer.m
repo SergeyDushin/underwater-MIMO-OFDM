@@ -4,9 +4,9 @@ classdef perfomanceAnalyzer
     % Target description is here
     % Output is here
     % =====================================================================    
-    % Sergey Dushin, nihsuds@gmail.com
-    % (c) 2021 by V.A. Trapeznikov Institute of control sciences of RAS
-    % www.ipu.ru
+    % Sergey Dushin, s.dushin@sdlab-co.ru
+    % (c) 2021 by SDLab-co
+    % www.sdlab-co.ru
     %
     % =====================================================================
     % MIT license
